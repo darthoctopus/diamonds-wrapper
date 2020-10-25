@@ -36,21 +36,21 @@ class DiamondsSession:
 
     def write_bg_hyperparams(self, f, overwrite=False):
         assert self.bg is not None, "Need an input background model"
-        fname = f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/background_hyperParameters.txt"
+        fname = f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/0_bg.txt"
         if not isfile(fname) or overwrite:
             v = np.array([self.bg/f, self.bg * f]).T
             np.savetxt(fname, v, fmt="%10.10f")
 
     def read_bg_hyperparams(self):
-        v = np.loadtxt(f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/background_hyperParameters.txt")
+        v = np.loadtxt(f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/0_bg.txt")
         return v
 
     def run_bg(self, force=False):
-        assert isfile(f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/background_hyperParameters.txt"), "Need to have written background hyperparameters"
+        assert isfile(f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/0_bg.txt"), "Need to have written background hyperparameters"
         outfile = f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg/background_parameterSummary.txt"
         if not isfile(outfile) or force:
             assert len(self.bg) == 8, "Insufficient number of parameters for TwoHarvey fit"
-            system(f"DIAMONDS/bin/background {self.CATALOGUE} {self.ID} bg TwoHarvey 0 >| DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg.log 2>&1")
+            system(f"DIAMONDS/bin/background {self.CATALOGUE} {self.ID} bg TwoHarvey 0 0 >| DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg.log 2>&1")
         self._bg_result = np.loadtxt(outfile)
         self.bg = self._bg_result[:, 0]
 
