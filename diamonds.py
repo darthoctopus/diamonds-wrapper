@@ -1,6 +1,6 @@
 import numpy as np
 from os import system
-from os.path import isfile
+from os.path import isfile, dirname
 
 class DiamondsSession:
     def __init__(self, ID, filename, n_head=12, CATALOGUE="EPIC"):
@@ -16,6 +16,8 @@ class DiamondsSession:
         for _ in ['', '/pb']:
             system(f"cp DIAMONDS/config{_.replace('/', '')}/* DIAMONDS/results/{self.CATALOGUE}{ID}{_}")
         system(f"cat {filename} | tail -n +{n_head} >| DIAMONDS/data/{self.CATALOGUE}{ID}.txt")
+
+        system(f"echo {dirname(__file__)}/DIAMONDS/ >| localPath.txt")
 
         self._bg = None
         self._pb = None
