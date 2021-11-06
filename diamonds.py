@@ -52,7 +52,7 @@ class DiamondsSession:
         outfile = f"DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg/background_parameterSummary.txt"
         if not isfile(outfile) or force:
             assert len(self.bg) == 8, "Insufficient number of parameters for TwoHarvey fit"
-            system(f"DIAMONDS/bin/background {self.CATALOGUE} {self.ID} bg TwoHarvey 0 0 >| DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg.log 2>&1")
+            system(f"DIAMONDS/bin/background {self.CATALOGUE} {self.ID} bg TwoHarvey 0 0 0 >| DIAMONDS/results/{self.CATALOGUE}{self.ID}/bg.log 2>&1")
         self._bg_result = np.loadtxt(outfile)
         self.bg = self._bg_result[:, 0]
 
